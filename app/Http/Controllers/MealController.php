@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Meal;
+use App\Helper;
 use App\Http\Resources\Meals as MealsResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Resources\MealResource;
@@ -59,12 +60,8 @@ class MealController extends Controller
             $meals->where('category_id','!=',null);
         }
         if ($categoryRequest > 0) {
-            $categories = explode(',',$categoryRequest);
-             foreach($categories as $item) {
-               $meals = $meals->whereHas('category', function($builder) use ($item) {
-                     $builder->where('categories.id',$item);
-                });
-             }
+            $category = $categoryRequest;
+            $meals->where('category_id',$category);
         }
         
         $mealsPaginator  =   $meals->paginate($perPage);

@@ -17,5 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//List meals
+Route::get('meals', 'MealController@index');
+
+//List single meal
+Route::get('meal/{id}', 'MealController@show');
+
 
 

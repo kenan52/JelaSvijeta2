@@ -13,16 +13,10 @@ use App\Http\Resources\Meals;
 */
 
 Route::get('/', function () {
-    
+    //
 });
 
-//List meals
-Route::get('meals', 'MealController@index');
 
-//List single meal
-Route::get('meal/{id}', 'MealController@show');
-
-Route::get('create', 'MealController@store');
 
 
 
