@@ -9,32 +9,30 @@ class Meals extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)
     {
-            $diff_timeRequest = $request->input('diff_time') ?: 1566908224;
-            $diff_time = date('Y-m-d H:i:s',$diff_timeRequest);
-
-            $status = "created";
-
-            if ($this->updated_at > $diff_time ) {
-                $status =   "modified";
-            }
-            elseif($this->deleted_at > $diff_time) {
-                $status = "deleted";
-            }
-            $meals =  [
-                'id'            => $this->id,
-                'title'         => $this->translate($request->input('lang'))->title,
-                'description'   => $this->translate($request->input('lang'))->description,
-                'status'        => $status,
+        $diff_timeRequest = $request->input('diff_time') ?: 1566908224;
+        $diff_time = date('Y-m-d H:i:s', $diff_timeRequest);
+        $status = 'created';
+        if ($this->updated_at > $diff_time) {
+            $status = 'modified';
+        } elseif ($this->deleted_at > $diff_time) {
+            $status = 'deleted';
+        }
+        $meals = [
+                'id' => $this->id,
+                'title' => $this->translate($request->input('lang'))->title,
+                'description' => $this->translate($request->input('lang'))->description,
+                'status' => $status,
             ];
-           
-            if ($request->input('with')) {
-                $with = explode(',', $request->input('with'));
-            
+
+        if ($request->input('with')) {
+            $with = explode(',', $request->input('with'));
+
             if (in_array('category', $with)) {
                 $meals['category'] = (new Category($this->whenLoaded('category')));
             }
@@ -45,7 +43,7 @@ class Meals extends JsonResource
                 $meals['ingredients'] = Ingredients::collection($this->whenLoaded('ingredients'));
             }
         }
-    
+
         return $meals;
     }
 }
